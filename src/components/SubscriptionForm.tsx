@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Mail, Bell, CheckCircle, XCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -85,13 +84,13 @@ export const SubscriptionForm: React.FC = () => {
 
         <div className="mt-6 text-center text-sm text-gray-500">
           By subscribing, you agree to our{' '}
-          <Link to="/terms" className="font-medium text-blue-600 hover:text-blue-500">
+          <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
             Terms of Service
-          </Link>{' '}
+          </a>{' '}
           and{' '}
-          <Link to="/privacy" className="font-medium text-blue-600 hover:text-blue-500">
+          <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
             Privacy Policy
-          </Link>
+          </a>
         </div>
       </div>
 

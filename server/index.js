@@ -2,23 +2,21 @@ import express from 'express';
 import cors from 'cors';
 import { ipoRouter } from './routes/ipoRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { corsOptions } from './config/cors.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configure CORS
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 204
-}));
+// Configure CORS - use the imported corsOptions
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
+// Mount all API routes under /api
+const apiRouter = express.Router();
+
 // Health check endpoint
-app.get('/health', (req, res) => {
+apiRouter.get('/health', (req, res) => {
   res.json({ 
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -27,7 +25,10 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-app.use('/api/ipos', ipoRouter);
+apiRouter.use('/ipos', ipoRouter);
+
+// Mount the API router
+app.use('/api', apiRouter);
 
 // Error handling
 app.use(errorHandler);
@@ -48,7 +49,7 @@ app.listen(PORT, () => {
 ├────────────────────────────────────────┤
 │  Status: Running                       │
 │  URL: http://localhost:${PORT}          │
-│  Health: http://localhost:${PORT}/health │
+│  Health: http://localhost:${PORT}/api/health │
 └────────────────────────────────────────┘
   `);
 });

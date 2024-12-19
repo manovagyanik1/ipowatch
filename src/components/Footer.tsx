@@ -1,16 +1,9 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Github, Twitter, Mail } from 'lucide-react';
 import { APP_CONFIG } from '../constants/app';
 
 export const Footer: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -28,36 +21,16 @@ export const Footer: React.FC = () => {
             <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <button 
-                  onClick={() => handleNavigation('/')} 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Home
-                </button>
+                <Link to="/" className="hover:text-white transition-colors">Home</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('/about')} 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  About
-                </button>
+                <Link to="/about" className="hover:text-white transition-colors">About</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('/terms')} 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </button>
+                <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => handleNavigation('/privacy')} 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </button>
+                <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
               </li>
             </ul>
           </div>
