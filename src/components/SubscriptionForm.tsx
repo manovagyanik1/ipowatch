@@ -5,20 +5,21 @@ import { subscribeToNewsletter } from '../services/api/subscribers';
 export const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    setErrorMessage('');
+    setMessage('');
     
     try {
-      await subscribeToNewsletter(email);
+      const response = await subscribeToNewsletter(email);
       setStatus('success');
+      setMessage(response.message);
       setEmail('');
     } catch (error) {
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to subscribe');
+      setMessage(error instanceof Error ? error.message : 'Failed to subscribe');
     }
   };
 
@@ -48,9 +49,11 @@ export const SubscriptionForm: React.FC = () => {
             />
           </div>
 
-          {status === 'error' && (
-            <div className="text-sm text-red-600 dark:text-red-400">
-              {errorMessage}
+          {message && (
+            <div className={`mt-4 text-sm ${
+              status === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            }`}>
+              {message}
             </div>
           )}
 

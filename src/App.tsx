@@ -6,6 +6,7 @@ import { About } from './pages/About';
 import { Terms } from './pages/Terms';
 import { Privacy } from './pages/Privacy';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { ConfirmSubscription } from './pages/ConfirmSubscription';
 
 function ScrollToTop() {
   const { pathname, state } = useLocation();
@@ -33,6 +34,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/confirm-subscription" element={<ConfirmSubscription />} />
           </Routes>
         </Layout>
       </ThemeProvider>

@@ -1,6 +1,8 @@
+import './config/env.js';
 import express from 'express';
 import cors from 'cors';
 import { ipoRouter } from './routes/ipoRoutes.js';
+import { subscriberRouter } from './routes/subscriberRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { corsOptions } from './config/cors.js';
 
@@ -46,6 +48,7 @@ apiRouter.get('/health', (req, res) => {
 
 // Routes
 apiRouter.use('/ipos', ipoRouter);
+apiRouter.use('/', subscriberRouter);
 
 // Mount the API router
 app.use('/api', apiRouter);
