@@ -1,19 +1,20 @@
 import { IPO } from '../types/ipo';
-import { isDateInRange } from './dateUtils';
-import { getRecommendation } from './ipoUtils';
 
-export const getIpoSortValue = (ipo: IPO): number => {
-  const isOpen = isDateInRange(ipo.subscriptionDates);
-  const recommendation = getRecommendation(ipo.listingGains, ipo.type);
-  
-  // Sorting priority (higher number = higher priority):
-  // 4: Open & Subscribe
-  // 3: Open & Other
-  // 2: Not Open & Subscribe
-  // 1: Not Open & Other
-  
-  if (isOpen) {
-    return recommendation === 'subscribe' ? 4 : 3;
+export const getStatusSortValue = (status: string): number => {
+  switch (status.toLowerCase()) {
+    case 'live':
+    case 'open': return 3;
+    case 'upcoming': return 2;
+    case 'closed': return 1;
+    default: return 0;
   }
-  return recommendation === 'subscribe' ? 2 : 1;
+};
+
+export const getRecommendationSortValue = (recommendation: string): number => {
+  switch (recommendation.toLowerCase()) {
+    case 'subscribe': return 3;
+    case 'neutral': return 2;
+    case 'avoid': return 1;
+    default: return 0;
+  }
 };
