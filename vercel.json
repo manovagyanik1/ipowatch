@@ -17,20 +17,15 @@
       "dest": "server/index.js"
     },
     {
-      "src": "^/static/(.*)",
-      "dest": "/dist/static/$1"
-    },
-    {
-      "src": "^/assets/(.*)",
-      "dest": "/dist/assets/$1"
-    },
-    {
-      "src": "^/favicon.ico",
-      "dest": "/dist/favicon.ico"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/index.html"
+      "dest": "/index.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
     }
   ]
 } 
