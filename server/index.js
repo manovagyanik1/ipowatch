@@ -12,8 +12,11 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+// Mount all API routes under /api
+const apiRouter = express.Router();
+
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+apiRouter.get('/health', (req, res) => {
   res.json({ 
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -22,7 +25,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // Routes
-app.use('/api/ipos', ipoRouter);
+apiRouter.use('/ipos', ipoRouter);
+
+// Mount the API router
+app.use('/api', apiRouter);
 
 // Error handling
 app.use(errorHandler);
