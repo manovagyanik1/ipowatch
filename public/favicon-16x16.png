@@ -1,0 +1,1 @@
+<command>convert public/favicon.svg -resize 16x16 public/favicon-16x16.png</command>
