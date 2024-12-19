@@ -7,7 +7,21 @@ import { corsOptions } from './config/cors.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configure CORS - use the imported corsOptions
+// Increase timeout to 30 seconds
+const SERVER_TIMEOUT = 30000;
+
+// Configure server timeout
+app.use((req, res, next) => {
+  res.setTimeout(SERVER_TIMEOUT, () => {
+    res.status(408).json({ 
+      error: 'Request timeout while processing data',
+      timeout: SERVER_TIMEOUT
+    });
+  });
+  next();
+});
+
+// Configure CORS
 app.use(cors(corsOptions));
 
 app.use(express.json());
