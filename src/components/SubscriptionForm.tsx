@@ -94,6 +94,9 @@ export const SubscriptionForm: React.FC = () => {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="mb-2">
+            Can't find the email? Please check your spam/junk folder and mark us as "not spam".
+          </p>
           By subscribing, you agree to our{' '}
           <a href="/terms" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
             Terms of Service

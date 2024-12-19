@@ -67,7 +67,7 @@ router.post('/subscribe', async (req, res) => {
         }
         
         return res.status(200).json({ 
-          message: 'Please check your email to confirm your subscription'
+          message: 'Please check your email (including spam/junk folder) to confirm your subscription'
         });
       }
     }
@@ -129,7 +129,7 @@ router.post('/subscribe', async (req, res) => {
     }
     
     res.status(200).json({ 
-      message: 'Please check your email to confirm your subscription'
+      message: 'Please check your email (including spam/junk folder) to confirm your subscription'
     });
   } catch (error) {
     console.error('Subscription error:', error);

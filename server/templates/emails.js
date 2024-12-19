@@ -30,9 +30,11 @@ const getEmailTemplate = (type, data) => {
               </a>
             </div>
             
-            <p style="color: #6b7280; font-size: 14px; margin: 24px 0;">
-              If you don't see the confirmation email, please check your spam folder and mark us as "not spam" to ensure you receive our updates.
-            </p>
+            <div style="background: #fef2f2; border: 1px solid #fee2e2; padding: 16px; border-radius: 8px; margin: 24px 0;">
+              <p style="color: #991b1b; font-size: 14px; margin: 0;">
+                ⚠️ Important: If you don't see this email in your inbox, please check your spam/junk folder and mark us as "not spam" to ensure you receive our updates.
+              </p>
+            </div>
             
             <p style="color: #6b7280; font-size: 14px;">
               If you didn't request this subscription, you can safely ignore this email.
