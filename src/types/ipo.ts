@@ -1,5 +1,6 @@
 export interface IPO {
   companyName: string;
+  type: string;
   price: string;
   issueSize: string;
   gmp: string;
