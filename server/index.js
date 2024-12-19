@@ -22,7 +22,13 @@ app.use((req, res, next) => {
 });
 
 // Configure CORS
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-domain.vercel.app'] 
+    : ['http://localhost:5173'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+}));
 
 app.use(express.json());
 
@@ -55,15 +61,12 @@ app.use((req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`
-┌────────────────────────────────────────┐
-│  IPO Watch Server                      │
-├────────────────────────────────────────┤
-│  Status: Running                       │
-│  URL: http://localhost:${PORT}          │
-│  Health: http://localhost:${PORT}/api/health │
-└────────────────────────────────────────┘
-  `);
-});
+// Only listen when running locally
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel
+export default app;
