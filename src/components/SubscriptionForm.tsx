@@ -97,7 +97,7 @@ export const SubscriptionForm: React.FC = () => {
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
         <div className="text-sm text-gray-600 flex items-center justify-center space-x-2">
           <Bell className="h-4 w-4" />
-          <span>You'll receive one email per day with our top recommendations</span>
+          <span>You'll receive one email per day with our recommendation for the live IPOs</span>
         </div>
       </div>
     </div>
