@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { Mail, Bell, CheckCircle, XCircle } from 'lucide-react';
+import { subscribeToNewsletter } from '../services/api/subscribers';
 
 export const SubscriptionForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
+    setErrorMessage('');
     
-    // Simulate API call
-    setTimeout(() => {
-      if (email.includes('@')) {
-        setStatus('success');
-        setEmail('');
-      } else {
-        setStatus('error');
-      }
-    }, 1000);
+    try {
+      await subscribeToNewsletter(email);
+      setStatus('success');
+      setEmail('');
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to subscribe');
+    }
   };
 
   return (
@@ -45,6 +47,12 @@ export const SubscriptionForm: React.FC = () => {
               disabled={status === 'loading' || status === 'success'}
             />
           </div>
+
+          {status === 'error' && (
+            <div className="text-sm text-red-600 dark:text-red-400">
+              {errorMessage}
+            </div>
+          )}
 
           <button
             type="submit"
@@ -84,11 +92,11 @@ export const SubscriptionForm: React.FC = () => {
 
         <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           By subscribing, you agree to our{' '}
-          <a href="#" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+          <a href="/terms" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
             Terms of Service
           </a>{' '}
           and{' '}
-          <a href="#" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+          <a href="/privacy" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
             Privacy Policy
           </a>
         </div>
