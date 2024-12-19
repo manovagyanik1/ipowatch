@@ -9,7 +9,7 @@ export const SubscriptionForm: React.FC = () => {
     e.preventDefault();
     setStatus('loading');
     
-    // TODO: Implement actual subscription logic
+    // Simulate API call
     setTimeout(() => {
       if (email.includes('@')) {
         setStatus('success');
@@ -21,14 +21,14 @@ export const SubscriptionForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <div className="px-6 py-8 sm:p-10">
         <div className="text-center mb-8">
-          <Bell className="mx-auto h-12 w-12 text-blue-500" />
-          <h2 className="mt-4 text-3xl font-extrabold text-gray-900">
+          <Bell className="mx-auto h-12 w-12 text-blue-500 dark:text-blue-400" />
+          <h2 className="mt-4 text-3xl font-extrabold text-gray-900 dark:text-white">
             Stay Updated
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
             Get daily IPO recommendations and market insights delivered to your inbox
           </p>
         </div>
@@ -41,7 +41,7 @@ export const SubscriptionForm: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="block w-full pl-10 pr-3 py-3 text-base placeholder-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full pl-10 pr-3 py-3 text-base placeholder-gray-500 dark:placeholder-gray-400 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
               disabled={status === 'loading' || status === 'success'}
             />
           </div>
@@ -51,8 +51,8 @@ export const SubscriptionForm: React.FC = () => {
             disabled={status === 'loading' || status === 'success'}
             className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white 
               ${status === 'success' 
-                ? 'bg-green-600 hover:bg-green-700' 
-                : 'bg-blue-600 hover:bg-blue-700'} 
+                ? 'bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600' 
+                : 'bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600'} 
               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
               disabled:opacity-50 disabled:cursor-not-allowed
               transition-colors duration-200`}
@@ -82,20 +82,20 @@ export const SubscriptionForm: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           By subscribing, you agree to our{' '}
-          <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+          <a href="#" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
             Terms of Service
           </a>{' '}
           and{' '}
-          <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+          <a href="#" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
             Privacy Policy
           </a>
         </div>
       </div>
 
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <div className="text-sm text-gray-600 flex items-center justify-center space-x-2">
+      <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+        <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center justify-center space-x-2">
           <Bell className="h-4 w-4" />
           <span>You'll receive one email per day with our recommendation for the live IPOs</span>
         </div>
