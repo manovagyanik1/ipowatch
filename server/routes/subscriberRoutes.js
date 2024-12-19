@@ -1,6 +1,7 @@
 import express from 'express';
 import sgMail from '@sendgrid/mail';
 import { createClient } from '@supabase/supabase-js';
+import getEmailTemplate from '../templates/emails.js';
 
 const router = express.Router();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -41,14 +42,7 @@ router.post('/subscribe', async (req, res) => {
             name: 'IPO Watch'
           },
           subject: 'Confirm your IPO Watch subscription',
-          html: `
-            <h2>Welcome to IPO Watch!</h2>
-            <p>Please click the link below to confirm your subscription:</p>
-            <a href="${confirmationUrl}" style="display:inline-block;background:#3b82f6;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;">
-              Confirm Subscription
-            </a>
-            <p>If you didn't request this subscription, you can ignore this email.</p>
-          `,
+          html: getEmailTemplate('confirmSubscription', { confirmationUrl })
         };
 
         try {
@@ -103,14 +97,7 @@ router.post('/subscribe', async (req, res) => {
         name: 'IPO Watch'
       },
       subject: 'Confirm your IPO Watch subscription',
-      html: `
-        <h2>Welcome to IPO Watch!</h2>
-        <p>Please click the link below to confirm your subscription:</p>
-        <a href="${confirmationUrl}" style="display:inline-block;background:#3b82f6;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;">
-          Confirm Subscription
-        </a>
-        <p>If you didn't request this subscription, you can ignore this email.</p>
-      `,
+      html: getEmailTemplate('confirmSubscription', { confirmationUrl })
     };
 
     try {
