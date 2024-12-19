@@ -1,5 +1,5 @@
 import { extractNumber } from '../utils/numberUtils.js';
-import { parseDateRange } from '../utils/dateUtils.js';
+import { parseDateRange, getIpoStatus } from '../utils/dateUtils.js';
 import { getRecommendation } from './recommendationService.js';
 import { extractHeaderIndices } from '../utils/tableUtils.js';
 
@@ -58,6 +58,8 @@ const processIpoData = (rawData) => {
   const gainValue = extractNumber(gain.replace('%', ''));
   const dates = parseDateRange(date);
   
+  const status = getIpoStatus(dates.startDate, dates.endDate);
+  
   const recommendation = getRecommendation({
     gmp: gmpValue,
     gain: gainValue,
@@ -71,7 +73,7 @@ const processIpoData = (rawData) => {
     gmp: gmp || 'N/A',
     listingGains: `${gain || '-'}`,
     subscriptionDates: date,
-    status: dates.startDate ? 'upcoming' : 'closed',
+    status,
     recommendation,
     type
   };
