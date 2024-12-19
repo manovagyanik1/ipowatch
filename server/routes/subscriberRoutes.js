@@ -3,14 +3,14 @@ import sgMail from '@sendgrid/mail';
 import { createClient } from '@supabase/supabase-js';
 
 const router = express.Router();
-sgMail.setApiKey(process.env.VITE_SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-console.log('Supabase URL:', process.env.VITE_SUPABASE_URL);
-console.log('Supabase Service Key:', process.env.VITE_SUPABASE_SERVICE_KEY);
+console.log('Supabase URL:', process.env.SUPABASE_URL);
+console.log('Supabase Service Key:', process.env.SUPABASE_SERVICE_KEY);
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 // Subscribe endpoint
@@ -32,12 +32,12 @@ router.post('/subscribe', async (req, res) => {
       
       if (existingSubscriber.status === 'pending') {
         // User exists but hasn't confirmed, send confirmation email again
-        const confirmationUrl = `${process.env.VITE_APP_URL}/confirm-subscription?token=${existingSubscriber.confirmation_token}`;
+        const confirmationUrl = `${process.env.APP_URL}/confirm-subscription?token=${existingSubscriber.confirmation_token}`;
         
         const msg = {
           to: email,
           from: {
-            email: process.env.VITE_FROM_EMAIL,
+            email: process.env.FROM_EMAIL,
             name: 'IPO Watch'
           },
           subject: 'Confirm your IPO Watch subscription',
@@ -94,12 +94,12 @@ router.post('/subscribe', async (req, res) => {
     }
 
     // Send confirmation email
-    const confirmationUrl = `${process.env.VITE_APP_URL}/confirm-subscription?token=${subscriber.confirmation_token}`;
+    const confirmationUrl = `${process.env.APP_URL}/confirm-subscription?token=${subscriber.confirmation_token}`;
     
     const msg = {
       to: email,
       from: {
-        email: process.env.VITE_FROM_EMAIL,
+        email: process.env.FROM_EMAIL,
         name: 'IPO Watch'
       },
       subject: 'Confirm your IPO Watch subscription',
