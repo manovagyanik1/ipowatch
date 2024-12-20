@@ -1,9 +1,13 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 import isBetween from 'dayjs/plugin/isBetween.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const getCurrentYear = () => dayjs().year();
 
@@ -50,13 +54,19 @@ export const parseDateRange = (dateRange) => {
 export const getIpoStatus = (startDate, endDate) => {
   if (!startDate || !endDate) return 'closed';
   
-  const now = dayjs();
+  // Get current time in IST
+  const now = dayjs().tz('Asia/Kolkata');
+  const currentTime = now.hour() * 100 + now.minute(); // 1630 for 4:30 PM
   
   if (now.isBefore(startDate)) {
     return 'upcoming';
   } else if (now.isAfter(endDate)) {
     return 'closed';
-  } else if (now.isBetween(startDate, endDate, 'day', '[]')) { // [] means inclusive
+  } else if (now.isBetween(startDate, endDate, 'day', '[]')) {
+    // On the last day, check if it's before 4 PM
+    if (now.isSame(endDate, 'day')) {
+      return currentTime < 1600 ? 'live' : 'closed';
+    }
     return 'live';
   }
   

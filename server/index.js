@@ -5,6 +5,7 @@ import { ipoRouter } from './routes/ipoRoutes.js';
 import { subscriberRouter } from './routes/subscriberRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { corsOptions } from './config/cors.js';
+import { scheduleDailyUpdates } from './cron/dailyUpdate.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,6 +64,9 @@ app.use((req, res) => {
     path: req.path
   });
 });
+
+// Start cron jobs
+scheduleDailyUpdates();
 
 // Only listen when running locally
 if (process.env.NODE_ENV !== 'production') {
