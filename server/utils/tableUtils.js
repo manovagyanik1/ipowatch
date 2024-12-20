@@ -5,7 +5,7 @@ export const findIpoTable = ($) => {
   return $('table').filter((i, el) => {
     const firstRow = $(el).find('tr').first();
     const headerText = firstRow.text().toLowerCase();
-    return headerText.includes('latest ipos') && headerText.includes('ipo gmp');
+    return headerText.includes('ipos') && headerText.includes('gmp');
   });
 };
 
