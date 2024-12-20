@@ -23,20 +23,29 @@ export const parseDateRange = (dateRange) => {
   if (!dateRange) return { startDate: null, endDate: null };
   
   try {
-    // Split "13-17 Dec" into ["13-17", "Dec"]
-    const [dates, month] = dateRange.trim().split(' ');
-    const [startDay, endDay] = dates.split('-').map(d => d.trim());
+    // Handle date formats like "18-20 Dec"
+    const match = dateRange.trim().match(/(\d+)-(\d+)\s+([A-Za-z]+)/);
+    if (!match) {
+      console.log('Failed to parse date range:', dateRange);
+      return { startDate: null, endDate: null };
+    }
+    
+    const [_, startDay, endDay, month] = match;
     
     const currentYear = getCurrentYear();
     let startDate = parseDate(startDay, month, currentYear);
     let endDate = parseDate(endDay, month, currentYear);
     
+    // Debug log
+    console.log('Parsed dates:', {
+      original: dateRange,
+      startDate: startDate?.format('YYYY-MM-DD HH:mm:ss'),
+      endDate: endDate?.format('YYYY-MM-DD HH:mm:ss'),
+      now: dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')
+    });
+    
     // Handle month transition (e.g., "30-1 Jan")
     if (startDate && endDate && startDate.isAfter(endDate)) {
-      // If start date is after end date, the start date should be in previous month
-      startDate = parseDate(startDay, month, currentYear);
-      endDate = parseDate(endDay, month, currentYear);
-      
       if (endDate.month() === 0) { // January
         startDate = startDate.month(11).year(currentYear - 1); // December of previous year
       } else {
@@ -44,9 +53,12 @@ export const parseDateRange = (dateRange) => {
       }
     }
     
+    // Set the time to end of day for endDate (4:00 PM IST)
+    endDate = endDate.hour(16).minute(0).second(0);
+    
     return { startDate, endDate };
   } catch (error) {
-    console.error('Error parsing date range:', error);
+    console.error('Error parsing date range:', dateRange, error);
     return { startDate: null, endDate: null };
   }
 };
@@ -56,17 +68,15 @@ export const getIpoStatus = (startDate, endDate) => {
   
   // Get current time in IST
   const now = dayjs().tz('Asia/Kolkata');
-  const currentTime = now.hour() * 100 + now.minute(); // 1630 for 4:30 PM
+  const currentHour = now.hour();
+  const currentMinute = now.minute();
   
   if (now.isBefore(startDate)) {
     return 'upcoming';
-  } else if (now.isAfter(endDate)) {
+  } else if (now.isAfter(endDate) || 
+             (now.isSame(endDate, 'day') && (currentHour > 16 || (currentHour === 16 && currentMinute > 0)))) {
     return 'closed';
   } else if (now.isBetween(startDate, endDate, 'day', '[]')) {
-    // On the last day, check if it's before 4 PM
-    if (now.isSame(endDate, 'day')) {
-      return currentTime < 1600 ? 'live' : 'closed';
-    }
     return 'live';
   }
   
