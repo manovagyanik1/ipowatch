@@ -33,7 +33,22 @@ export async function sendDailyUpdates() {
     // Get today's IPO data
     console.log(`[${startTime}] Fetching IPO data`);
     const ipos = await scrapeIpoData();
-    const activeIpos = ipos.filter(ipo => ipo.status === 'live');
+    // Process IPOs with sort values
+    const processedIpos = ipos.map(ipo => ({
+      ...ipo,
+      statusSortValue: ipo.status === 'live' ? 2 : ipo.status === 'upcoming' ? 1 : 0,
+      recommendationSortValue: ipo.recommendation === 'subscribe' ? 1 : 0
+    }));
+    
+    // Sort by status (live first) and recommendation (subscribe first)
+    const sortedIpos = processedIpos.sort((a, b) => {
+      if (a.statusSortValue !== b.statusSortValue) {
+        return b.statusSortValue - a.statusSortValue;
+      }
+      return b.recommendationSortValue - a.recommendationSortValue;
+    });
+    
+    const activeIpos = sortedIpos.filter(ipo => ipo.status === 'live');
     console.log(`[${startTime}] Found ${activeIpos.length} active IPOs`);
 
     if (!activeIpos.length) {

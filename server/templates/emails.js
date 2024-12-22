@@ -128,7 +128,7 @@ const getEmailTemplate = (type, data) => {
                           </td>
                           <td style="padding: 12px; text-align: right; border-bottom: 1px solid #e5e7eb;">
                             <div style="color: ${parseFloat(ipo.listingGains) > 0 ? '#059669' : '#dc2626'};">
-                              ${ipo.listingGains}%
+                              ${ipo.listingGains}
                             </div>
                           </td>
                           <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;">
