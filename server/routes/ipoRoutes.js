@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', getIpos);
 
 // Test endpoint for triggering daily updates
-router.post('/trigger-update', async (req, res) => {
+router.get('/trigger-update', async (req, res) => {
   const result = await triggerDailyUpdate();
   if (result.success) {
     res.json({ message: result.message });

@@ -33,7 +33,7 @@ export async function sendDailyUpdates() {
     // Get today's IPO data
     console.log(`[${startTime}] Fetching IPO data`);
     const ipos = await scrapeIpoData();
-    const activeIpos = ipos.filter(ipo => ipo.status === 'active');
+    const activeIpos = ipos.filter(ipo => ipo.status === 'live');
     console.log(`[${startTime}] Found ${activeIpos.length} active IPOs`);
 
     if (!activeIpos.length) {
@@ -56,9 +56,9 @@ export async function sendDailyUpdates() {
         name: 'IPO Watch'
       },
       subject: `IPO Watch Daily Update - ${date}`,
-      html: getEmailTemplate('dailyIpoUpdate', { 
+      html: getEmailTemplate('dailyIpoUpdate', {
         ipos: activeIpos,
-        date 
+        date
       })
     };
 
@@ -85,4 +85,4 @@ export async function sendDailyUpdates() {
     });
     throw error;
   }
-} 
+}
