@@ -46,8 +46,7 @@ export function analyzeIpo(ipo) {
     analysis: analysis.join(' '),
     metrics: {
       gmpValue,
-      gainValue,
-      issueSize
+      gainValue
     }
   };
 }
