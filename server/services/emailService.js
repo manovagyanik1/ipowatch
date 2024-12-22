@@ -9,22 +9,37 @@ const supabase = createClient(
 );
 
 export async function sendDailyUpdates() {
+  const startTime = new Date().toISOString();
+  console.log(`[${startTime}] Starting email service`);
+
   try {
     // Get active subscribers
+    console.log(`[${startTime}] Fetching subscribers from Supabase`);
     const { data: subscribers, error: subscriberError } = await supabase
       .from('subscribers')
       .select('email')
       .eq('status', 'active');
 
-    if (subscriberError) throw subscriberError;
+    if (subscriberError) {
+      console.error(`[${startTime}] Supabase error:`, subscriberError);
+      throw subscriberError;
+    }
     if (!subscribers.length) {
-      console.log('No active subscribers found');
+      console.log(`[${startTime}] No active subscribers found`);
       return;
     }
+    console.log(`[${startTime}] Found ${subscribers.length} active subscribers`);
 
     // Get today's IPO data
+    console.log(`[${startTime}] Fetching IPO data`);
     const ipos = await scrapeIpoData();
     const activeIpos = ipos.filter(ipo => ipo.status === 'active');
+    console.log(`[${startTime}] Found ${activeIpos.length} active IPOs`);
+
+    if (!activeIpos.length) {
+      console.log(`[${startTime}] No active IPOs to send updates about`);
+      return;
+    }
 
     // Prepare email
     const date = new Date().toLocaleDateString('en-IN', {
@@ -34,6 +49,7 @@ export async function sendDailyUpdates() {
       day: 'numeric'
     });
 
+    console.log(`[${startTime}] Preparing to send emails`);
     const msg = {
       from: {
         email: process.env.FROM_EMAIL,
@@ -48,6 +64,7 @@ export async function sendDailyUpdates() {
 
     // Send to all subscribers
     const emailPromises = subscribers.map(subscriber => {
+      console.log(`[${startTime}] Sending email to: ${subscriber.email}`);
       return sgMail.send({
         ...msg,
         to: subscriber.email
@@ -55,10 +72,17 @@ export async function sendDailyUpdates() {
     });
 
     await Promise.all(emailPromises);
-    console.log(`Daily update sent to ${subscribers.length} subscribers`);
+    console.log(`[${startTime}] Successfully sent updates to ${subscribers.length} subscribers`);
 
   } catch (error) {
-    console.error('Error sending daily updates:', error);
+    console.error(`[${startTime}] Email service error:`, {
+      message: error.message,
+      stack: error.stack,
+      type: error.name,
+      supabaseError: error.code === 'supabase-error',
+      sendgridError: error.code === 'sendgrid-error',
+      details: error.response?.body
+    });
     throw error;
   }
 } 

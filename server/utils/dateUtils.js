@@ -36,13 +36,6 @@ export const parseDateRange = (dateRange) => {
     let startDate = parseDate(startDay, month, currentYear);
     let endDate = parseDate(endDay, month, currentYear);
     
-    // Debug log
-    console.log('Parsed dates:', {
-      original: dateRange,
-      startDate: startDate?.format('YYYY-MM-DD HH:mm:ss'),
-      endDate: endDate?.format('YYYY-MM-DD HH:mm:ss'),
-      now: dayjs().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')
-    });
     
     // Handle month transition (e.g., "30-1 Jan")
     if (startDate && endDate && startDate.isAfter(endDate)) {
