@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, TrendingUp, Copy } from 'lucide-react';
 import { IPO } from '../../types/ipo';
 import { TableBadge } from './TableBadge';
+import { toast } from 'react-hot-toast';
 
 interface TableRowProps {
   ipo: IPO;
@@ -11,10 +12,24 @@ export const TableRow: React.FC<TableRowProps> = ({ ipo }) => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
       .then(() => {
-        // You can add a toast notification here if you want
-        console.log('Copied to clipboard:', text);
+        toast.success('Copied to clipboard!', {
+          position: 'bottom-center',
+          duration: 2000,
+          style: {
+            backgroundColor: '#f0fdf4',
+            color: '#15803d',
+          },
+        });
       })
       .catch(err => {
+        toast.error('Failed to copy', {
+          position: 'bottom-center',
+          duration: 2000,
+          style: {
+            backgroundColor: '#fef2f2',
+            color: '#dc2626',
+          },
+        });
         console.error('Failed to copy:', err);
       });
   };

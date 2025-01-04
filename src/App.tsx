@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
@@ -27,6 +28,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
+        <Toaster />
         <ScrollToTop />
         <Layout>
           <Routes>
