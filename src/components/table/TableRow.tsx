@@ -37,7 +37,7 @@ export const TableRow: React.FC<TableRowProps> = ({ ipo }) => {
   return (
     <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2" onClick={() => copyToClipboard(ipo.companyName)}>
           <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
             {ipo.companyName}
           </div>
